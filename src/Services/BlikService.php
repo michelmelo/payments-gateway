@@ -1,9 +1,10 @@
 <?php
 
-namespace PaymentGateway\Services;
+namespace MichelMelo\PaymentGateway\Services;
 
-use PaymentGateway\Exceptions\PaymentException;
-use PaymentGateway\Interfaces\PaymentMethodInterface;
+use MichelMelo\PaymentGateway\Exceptions\PaymentException;
+use MichelMelo\PaymentGateway\Helpers\Logger;
+use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class BlikService implements PaymentMethodInterface
 {
@@ -18,6 +19,8 @@ class BlikService implements PaymentMethodInterface
 
     public function processPayment(array $paymentData): array
     {
+        Logger::log("Processing Blik payment with data: " . json_encode($paymentData));
+
         $this->validatePaymentData($paymentData);
 
         $requestBody = [
@@ -33,10 +36,13 @@ class BlikService implements PaymentMethodInterface
         $response = $this->sendRequest('POST', $this->apiEndpoint, $requestBody);
 
         if ($response['status'] !== 'success') {
+            Logger::log("Blik payment failed: " . $response['message']);
             throw new PaymentException('Failed to process Blik payment: ' . $response['message']);
         }
 
         $this->transactionID = $response['transactionId'];
+
+        Logger::log("Blik payment successful. Transaction ID: {$this->transactionID}");
 
         return $response;
     }

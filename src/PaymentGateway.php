@@ -3,6 +3,7 @@
 namespace MichelMelo\PaymentGateway;
 
 use MichelMelo\PaymentGateway\Exceptions\PaymentException;
+use MichelMelo\PaymentGateway\Helpers\Logger; // Adicionado
 use MichelMelo\PaymentGateway\Services\BlikService;
 use MichelMelo\PaymentGateway\Services\CardService;
 use MichelMelo\PaymentGateway\Services\MbWayService;
@@ -21,6 +22,8 @@ class PaymentGateway
 
     public function __construct($bearerToken, $clientId, $terminalId, $paymentType, $url)
     {
+        Logger::log("Initializing PaymentGateway with clientId: {$clientId}"); // Log
+
         $this->bearerToken = $bearerToken;
         $this->clientId    = $clientId;
         $this->terminalId  = $terminalId;
@@ -37,7 +40,10 @@ class PaymentGateway
 
     public function processPayment($method, $data, $customer)
     {
-        if (! isset($this->services[$method])) {
+        Logger::log("Processing payment with method: {$method}"); // Log
+
+        if (!isset($this->services[$method])) {
+            Logger::log("Payment method not supported: {$method}"); // Log
             throw new PaymentException('Payment method not supported.');
         }
 
@@ -48,6 +54,8 @@ class PaymentGateway
         $data['paymentType'] = $this->paymentType;
         $data['url']         = $this->url;
         $data['customer']    = $customer;
+
+        Logger::log("Payment data: " . json_encode($data)); // Log
 
         return $this->services[$method]->process($data);
     }
