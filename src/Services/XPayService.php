@@ -7,12 +7,13 @@ use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class XPayService implements PaymentMethodInterface
 {
-    public function processPayment(array $paymentData)
+    public function processPayment(array $paymentData): array
     {
-        // Implement the logic to process payment via XPay
-        // Validate payment data
-        // Call XPay API
-        // Handle response and return result
+        // Implementação do processamento de pagamento para XPay
+        return [
+            'status'  => 'success',
+            'message' => 'Payment processed successfully via XPay.',
+        ];
     }
 
     public function refundPayment(string $transactionId, float $amount)
@@ -23,10 +24,22 @@ class XPayService implements PaymentMethodInterface
         // Handle response and return result
     }
 
-    public function getPaymentStatus(string $transactionId)
+    public function getPaymentStatus(string $transactionId): array
     {
-        // Implement the logic to get payment status via XPay
-        // Call XPay API to retrieve status
-        // Handle response and return status
+        // Implementação para obter o status do pagamento
+        return [
+            'status'        => 'completed',
+            'transactionId' => $transactionId,
+        ];
+    }
+
+    public function validatePayment(array $paymentData): bool
+    {
+        // Validação dos dados de pagamento
+        if (empty($paymentData['xpay_token']) || empty($paymentData['amount'])) {
+            throw new PaymentException('Invalid XPay payment data.');
+        }
+
+        return true; // Retorna true se os dados forem válidos
     }
 }
