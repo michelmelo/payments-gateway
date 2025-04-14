@@ -2,31 +2,35 @@
 
 namespace MichelMelo\PaymentGateway\Services;
 
-use MichelMelo\PaymentGateway\Exceptions\PaymentException;
 use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class MultibancoService implements PaymentMethodInterface
 {
-    public function createPayment(array $paymentData)
+    public function processPayment(array $paymentData): array
     {
-        // Implement the logic to create a Multibanco payment
-        // Validate payment data
-        // Call the payment gateway API
-        // Return the response
+        // Implementação do processamento de pagamento
+        return [
+            'status' => 'success',
+            'transactionId' => '987654321',
+        ];
     }
 
-    public function getPaymentStatus(string $paymentId)
+    public function getPaymentStatus(string $transactionId): array
     {
-        // Implement the logic to retrieve the status of a Multibanco payment
-        // Call the payment gateway API
-        // Return the payment status
+        // Implementação para obter o status do pagamento
+        return [
+            'status' => 'completed',
+            'transactionId' => $transactionId,
+        ];
     }
 
-    public function refundPayment(string $paymentId, float $amount)
+    public function validatePayment(array $paymentData): bool
     {
-        // Implement the logic to refund a Multibanco payment
-        // Validate refund amount
-        // Call the payment gateway API
-        // Return the response
+        // Validação dos dados de pagamento
+        if (empty($paymentData['amount']) || empty($paymentData['currency'])) {
+            throw new \InvalidArgumentException('Dados de pagamento inválidos.');
+        }
+
+        return true; // Retorna true se os dados forem válidos
     }
 }
