@@ -23,4 +23,14 @@ class CardService implements PaymentMethodInterface
             'transactionId' => $transactionId,
         ];
     }
+
+    public function validatePayment(array $paymentData): bool
+    {
+        // Validação dos dados de pagamento
+        if (empty($paymentData['card_number']) || empty($paymentData['expiry_date']) || empty($paymentData['cvv'])) {
+            throw new PaymentException('Invalid card payment data.');
+        }
+
+        return true; // Retorna true se os dados forem válidos
+    }
 }
