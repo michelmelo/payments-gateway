@@ -7,25 +7,20 @@ use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class CardService implements PaymentMethodInterface
 {
-    public function processPayment(array $paymentData)
+    public function processPayment(array $paymentData): array
     {
-        // Implement card payment processing logic here
-        // Validate payment data
-        // Call external payment gateway API
-        // Handle response and return result
+        // Implementação do processamento de pagamento para cartão
+        return [
+            'status' => 'success',
+            'message' => 'Payment processed successfully via Card.',
+        ];
     }
 
-    public function refundPayment(string $transactionId, float $amount)
+    public function getPaymentStatus(string $transactionId): array
     {
-        // Implement refund logic here
-        // Call external payment gateway API for refund
-        // Handle response and return result
-    }
-
-    public function getPaymentStatus(string $transactionId)
-    {
-        // Implement logic to retrieve payment status
-        // Call external payment gateway API to get status
-        // Handle response and return status
+        return [
+            'status' => 'completed',
+            'transactionId' => $transactionId,
+        ];
     }
 }

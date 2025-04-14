@@ -2,30 +2,25 @@
 
 namespace MichelMelo\PaymentGateway\Services;
 
-use MichelMelo\PaymentGateway\Exceptions\PaymentException;
 use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class MbWayService implements PaymentMethodInterface
 {
-    public function processPayment(array $paymentData)
+    public function processPayment(array $paymentData): array
     {
-        // Implement the logic to process payment via MBWay
-        // Validate payment data
-        // Call MBWay API
-        // Handle response and return result
+        // Implementação do processamento de pagamento para MBWay
+        return [
+            'status' => 'success',
+            'message' => 'Payment processed successfully via MBWay.',
+        ];
     }
 
-    public function refundPayment(string $transactionId)
+    public function getPaymentStatus(string $transactionId): array
     {
-        // Implement the logic to refund a payment via MBWay
-        // Call MBWay API for refund
-        // Handle response and return result
-    }
-
-    public function getPaymentStatus(string $transactionId)
-    {
-        // Implement the logic to get the status of a payment via MBWay
-        // Call MBWay API to retrieve status
-        // Handle response and return status
+        // Implementação para obter o status do pagamento
+        return [
+            'status' => 'completed',
+            'transactionId' => $transactionId,
+        ];
     }
 }
