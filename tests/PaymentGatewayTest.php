@@ -2,8 +2,8 @@
 
 namespace MichelMelo\PaymentGateway\Tests;
 
-use MichelMelo\PaymentGateway\PaymentGateway;
 use MichelMelo\PaymentGateway\Exceptions\PaymentException;
+use MichelMelo\PaymentGateway\PaymentGateway;
 use PHPUnit\Framework\TestCase;
 
 class PaymentGatewayTest extends TestCase
@@ -56,7 +56,7 @@ class PaymentGatewayTest extends TestCase
         ];
 
         $data = [
-            'amount' => 10.00,
+            'amount'   => 10.00,
             'currency' => 'EUR',
         ];
 
@@ -124,7 +124,7 @@ class PaymentGatewayTest extends TestCase
         ];
 
         $data = [
-            'amount' => 10.00,
+            'amount'   => 10.00,
             'currency' => 'EUR',
         ];
 

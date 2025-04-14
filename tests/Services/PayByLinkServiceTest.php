@@ -1,7 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use MichelMelo\PaymentGateway\Services\PayByLinkService;
+use PHPUnit\Framework\TestCase;
 
 class PayByLinkServiceTest extends TestCase
 {

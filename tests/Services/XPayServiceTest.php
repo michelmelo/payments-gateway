@@ -1,7 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use MichelMelo\PaymentGateway\Services\XPayService; // Adjust the namespace according to your project structure
+use MichelMelo\PaymentGateway\Services\XPayService;
+use PHPUnit\Framework\TestCase; // Adjust the namespace according to your project structure
 
 class XPayServiceTest extends TestCase
 {

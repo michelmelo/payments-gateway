@@ -1,7 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use MichelMelo\PaymentGateway\Services\BlikService; // Adjust the namespace as necessary
+use MichelMelo\PaymentGateway\Services\BlikService;
+use PHPUnit\Framework\TestCase; // Adjust the namespace as necessary
 
 class BlikServiceTest extends TestCase
 {

@@ -1,7 +1,7 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use MichelMelo\PaymentGateway\Services\MbWayService; // Adjust the namespace as necessary
+use MichelMelo\PaymentGateway\Services\MbWayService;
+use PHPUnit\Framework\TestCase; // Adjust the namespace as necessary
 
 class MbWayServiceTest extends TestCase
 {

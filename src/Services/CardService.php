@@ -11,7 +11,7 @@ class CardService implements PaymentMethodInterface
     {
         // Implementação do processamento de pagamento para cartão
         return [
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Payment processed successfully via Card.',
         ];
     }
@@ -19,7 +19,7 @@ class CardService implements PaymentMethodInterface
     public function getPaymentStatus(string $transactionId): array
     {
         return [
-            'status' => 'completed',
+            'status'        => 'completed',
             'transactionId' => $transactionId,
         ];
     }

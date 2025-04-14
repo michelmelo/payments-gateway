@@ -10,7 +10,7 @@ class MbWayService implements PaymentMethodInterface
     {
         // Implementação do processamento de pagamento para MBWay
         return [
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Payment processed successfully via MBWay.',
         ];
     }
@@ -19,7 +19,7 @@ class MbWayService implements PaymentMethodInterface
     {
         // Implementação para obter o status do pagamento
         return [
-            'status' => 'completed',
+            'status'        => 'completed',
             'transactionId' => $transactionId,
         ];
     }

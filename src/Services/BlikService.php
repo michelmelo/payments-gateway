@@ -21,10 +21,10 @@ class BlikService implements PaymentMethodInterface
         $this->validatePaymentData($paymentData);
 
         $requestBody = [
-            'paymentType' => $this->paymentType,
+            'paymentType'   => $this->paymentType,
             'paymentMethod' => $this->paymentMethod,
-            'amount' => [
-                'value' => $this->amount_value,
+            'amount'        => [
+                'value'    => $this->amount_value,
                 'currency' => $this->amount_currency,
             ],
             'orderId' => $this->order_id,
@@ -47,8 +47,8 @@ class BlikService implements PaymentMethodInterface
 
         $requestBody = [
             'transactionId' => $transactionId,
-            'amount' => [
-                'value' => $amountValue,
+            'amount'        => [
+                'value'    => $amountValue,
                 'currency' => $amountCurrency,
             ],
             'customerInfo' => $customerInfo,
@@ -82,10 +82,10 @@ class BlikService implements PaymentMethodInterface
             throw new PaymentException('Invalid payment data provided.');
         }
 
-        $this->paymentType = $paymentData['paymentType'];
-        $this->amount_value = $paymentData['amount_value'];
+        $this->paymentType     = $paymentData['paymentType'];
+        $this->amount_value    = $paymentData['amount_value'];
         $this->amount_currency = $paymentData['amount_currency'];
-        $this->order_id = $paymentData['order_id'];
+        $this->order_id        = $paymentData['order_id'];
     }
 
     private function sendRequest(string $method, string $endpoint, array $body = []): array
@@ -95,9 +95,9 @@ class BlikService implements PaymentMethodInterface
 
         // Example of sending JSON request and receiving JSON response
         $response = [
-            'status' => 'success',
+            'status'        => 'success',
             'transactionId' => '123456789',
-            'message' => 'Payment processed successfully',
+            'message'       => 'Payment processed successfully',
         ];
 
         return $response;
