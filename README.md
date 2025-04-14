@@ -40,7 +40,6 @@ $paymentGateway = new PaymentGateway(
     'PURS', // ou 'AUTH'
     'https://api.paymentgateway.com'
 );
-
 ```
 
 ### Processando Pagamentos
@@ -54,7 +53,7 @@ O método `processPayment` permite processar pagamentos com base no método de p
 $customer = [
     'customerInfo' => [
         'customerName'    => 'John Smith',
-        'customerEmail'   => 'John@email.com',
+        'customerEmail'   => 'john@email.com',
         'customerPhone'   => '+351-912345678',
         'shippingAddress' => [
             'street1'  => 'Shipping street1',
@@ -79,6 +78,38 @@ $data = [
 ];
 
 $response = $paymentGateway->processPayment('mbway', $data, $customer);
+```
+
+### Exibindo o Widget ou Formulário de Pagamento
+
+Após processar o pagamento, você pode usar a classe `PaymentWidget` para exibir o widget ou o formulário de pagamento.
+
+#### Exibindo o Widget
+
+Use o método `widget` para gerar o script do widget de pagamento:
+
+```php
+use MichelMelo\PaymentGateway\Helpers\PaymentWidget;
+
+echo PaymentWidget::widget($response['transactionId'], 'https://example.com');
+```
+
+Saída esperada:
+```html
+<script src="https://example.com/assets/js/widget.js?id=123456789"></script>
+```
+
+#### Exibindo o Formulário
+
+Use o método `form` para gerar o formulário de pagamento:
+
+```php
+echo PaymentWidget::form('checkout', '{"key":"value"}');
+```
+
+Saída esperada:
+```html
+<form class='paymentSPG' spg-context='checkout' spg-config='{"key":"value"}'></form>
 ```
 
 #### Multibanco
