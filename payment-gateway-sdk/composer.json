@@ -1,0 +1,27 @@
+{
+    "name": "michelmelo/payments-gateway",
+    "description": "A payment gateway SDK for various payment methods including MBWay, Multibanco, and international options.",
+    "type": "library",
+    "require": {
+        "php": "^7.4|^8.0|^8.1|^8.2",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PaymentGateway\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PaymentGateway\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit"
+    }
+}
