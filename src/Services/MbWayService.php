@@ -8,10 +8,10 @@ class MbWayService implements PaymentMethodInterface
 {
     public function processPayment(array $paymentData): array
     {
-        // Implementação do processamento de pagamento para MBWay
+        // Implementação do processamento de pagamento
         return [
-            'status'  => 'success',
-            'message' => 'Payment processed successfully via MBWay.',
+            'status' => 'success',
+            'transactionId' => '123456789',
         ];
     }
 
@@ -19,8 +19,16 @@ class MbWayService implements PaymentMethodInterface
     {
         // Implementação para obter o status do pagamento
         return [
-            'status'        => 'completed',
+            'status' => 'completed',
             'transactionId' => $transactionId,
         ];
+    }
+
+    public function validatePayment(array $paymentData): void
+    {
+        // Validação dos dados de pagamento
+        if (empty($paymentData['amount']) || empty($paymentData['currency'])) {
+            throw new \InvalidArgumentException('Dados de pagamento inválidos.');
+        }
     }
 }
