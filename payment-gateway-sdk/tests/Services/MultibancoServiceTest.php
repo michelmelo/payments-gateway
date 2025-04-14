@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use YourNamespace\Exceptions\PaymentException;
-use YourNamespace\Services\MultibancoService;
+use MichelMelo\PaymentGateway\Exceptions\PaymentException;
+use MichelMelo\PaymentGateway\Services\MultibancoService;
 
 class MultibancoServiceTest extends TestCase
 {

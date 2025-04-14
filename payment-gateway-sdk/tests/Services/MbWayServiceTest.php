@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use YourNamespace\Services\MbWayService; // Adjust the namespace as necessary
+use MichelMelo\PaymentGateway\Services\MbWayService; // Adjust the namespace as necessary
 
 class MbWayServiceTest extends TestCase
 {
@@ -27,7 +27,7 @@ class MbWayServiceTest extends TestCase
 
     public function testInvalidPaymentData()
     {
-        $this->expectException(YourNamespace\Exceptions\PaymentException::class);
+        $this->expectException(MichelMelo\PaymentGateway\Exceptions\PaymentException::class);
 
         $invalidData = [
             'amount' => 1000,

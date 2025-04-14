@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use YourNamespace\Services\XPayService; // Adjust the namespace according to your project structure
+use MichelMelo\PaymentGateway\Services\XPayService; // Adjust the namespace according to your project structure
 
 class XPayServiceTest extends TestCase
 {
@@ -47,7 +47,7 @@ class XPayServiceTest extends TestCase
         ];
 
         // Act & Assert
-        $this->expectException(YourNamespace\Exceptions\PaymentException::class);
+        $this->expectException(MichelMelo\PaymentGateway\Exceptions\PaymentException::class);
         $this->xPayService->processPayment($invalidPaymentData);
     }
 

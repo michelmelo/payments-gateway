@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use YourNamespace\Services\PayByLinkService;
+use MichelMelo\PaymentGateway\Services\PayByLinkService;
 
 class PayByLinkServiceTest extends TestCase
 {
@@ -41,7 +41,7 @@ class PayByLinkServiceTest extends TestCase
         ];
 
         // Act & Assert
-        $this->expectException(YourNamespace\Exceptions\PaymentException::class);
+        $this->expectException(MichelMelo\PaymentGateway\Exceptions\PaymentException::class);
         $this->payByLinkService->processPayment($paymentData);
     }
 

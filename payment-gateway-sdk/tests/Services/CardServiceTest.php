@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use YourNamespace\Exceptions\PaymentException;
-use YourNamespace\Services\CardService;
+use MichelMelo\PaymentGateway\Exceptions\PaymentException;
+use MichelMelo\PaymentGateway\Services\CardService;
 
 class CardServiceTest extends TestCase
 {

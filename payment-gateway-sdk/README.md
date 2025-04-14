@@ -84,13 +84,36 @@ $response = $paymentGateway->processPayment('mbway', $data, $customer);
 #### Multibanco
 
 ```php
+<?php
+$customer = [
+    'customerInfo' => [
+        'customerName'    => 'John Smith',
+        'customerEmail'   => 'John@email.com',
+        'customerPhone'   => '+351-912345678',
+        'shippingAddress' => [
+            'street1'  => 'Shipping street1',
+            'street2'  => 'Shipping street2',
+            'city'     => 'Lisbon',
+            'postcode' => '1700-123',
+            'country'  => 'PT',
+        ],
+        'billingAddress' => [
+            'street1'  => 'Billing street1',
+            'street2'  => 'Billing street2',
+            'city'     => 'Lisbon',
+            'postcode' => '1700-123',
+            'country'  => 'PT',
+        ],
+    ],
+];
+
 $data = [
     'entity' => '12345',
     'reference' => '123456789',
     'amount' => 10.00,
 ];
 
-$response = $paymentGateway->processPayment('multibanco', $data);
+$response = $paymentGateway->processPayment('multibanco', $data, $customer);
 ```
 
 #### Cartão de Crédito

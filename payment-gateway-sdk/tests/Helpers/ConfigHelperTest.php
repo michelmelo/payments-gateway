@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use YourNamespace\Helpers\ConfigHelper;
+use MichelMelo\PaymentGateway\Helpers\ConfigHelper;
 
 class ConfigHelperTest extends TestCase
 {
