@@ -24,11 +24,13 @@ class MbWayService implements PaymentMethodInterface
         ];
     }
 
-    public function validatePayment(array $paymentData): void
+    public function validatePayment(array $paymentData): bool
     {
         // Validação dos dados de pagamento
         if (empty($paymentData['amount']) || empty($paymentData['currency'])) {
             throw new \InvalidArgumentException('Dados de pagamento inválidos.');
         }
+
+        return true; // Retorna true se os dados forem válidos
     }
 }
