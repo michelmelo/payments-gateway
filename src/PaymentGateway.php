@@ -47,6 +47,11 @@ class PaymentGateway
             throw new PaymentException('Payment method not supported.');
         }
 
+        $service = $this->services[$method];
+
+        // Valida os dados de pagamento
+        $service->validatePayment($data);
+
         // Add the required data to the payment request
         $data['bearerToken'] = $this->bearerToken;
         $data['clientId']    = $this->clientId;
@@ -57,6 +62,7 @@ class PaymentGateway
 
         Logger::log("Payment data: " . json_encode($data)); // Log
 
-        return $this->services[$method]->process($data);
+        // Processa o pagamento
+        return $service->processPayment($data);
     }
 }
