@@ -1,6 +1,6 @@
 <?php
 
-namespace PaymentGateway\Exceptions;
+namespace MichelMelo\PaymentGateway\Exceptions;
 
 use Exception;
 
