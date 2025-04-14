@@ -19,11 +19,55 @@ class BlikService implements PaymentMethodInterface
 
     public function processPayment(array $paymentData): array
     {
-        // Implementação do processamento de pagamento para Blik
-        return [
-            'status'  => 'success',
-            'message' => 'Payment processed successfully via Blik.',
+        // Valida os dados de pagamento
+        $this->validatePaymentData($paymentData);
+
+        // Monta o corpo da requisição
+        $body = [
+            'merchant' => [
+                'terminalId'            => $this->TerminalID,
+                'channel'               => 'web',
+                'merchantTransactionId' => $this->merchantTransactionId,
+            ],
+            'transaction' => [
+                'transactionTimestamp' => date("Y-m-d\TH:i:s.v\Z"),
+                'description'          => "{$this->transactionDescription} {$this->merchantTransactionId} terminalId={$this->TerminalID}",
+                'moto'                 => false,
+                'paymentType'          => $this->paymentType,
+                'paymentMethod'        => $this->paymentMethod,
+                'amount'               => [
+                    'value'    => $this->amount_value,
+                    'currency' => $this->amount_currency,
+                ],
+            ],
         ];
+
+        // Monta os cabeçalhos da requisição
+        $headers = [
+            'User-Agent'      => $this->UserAgent,
+            'Accept'          => 'application/json',
+            'Content-Type'    => 'application/json',
+            'Authorization'   => 'Bearer ' . $this->BearerToken,
+            'X-IBM-Client-Id' => $this->APIClientID,
+        ];
+
+        try {
+            // Envia a requisição para o endpoint
+            $response = $this->sendRequest('POST', $this->apiEndpoint, [
+                'headers' => $headers,
+                'body'    => json_encode($body),
+            ]);
+
+            if ($response['status'] !== 'success') {
+                throw new PaymentException('Failed to process Blik payment: ' . $response['message']);
+            }
+
+            $this->transactionID = $response['transactionId'];
+
+            return $response;
+        } catch (\Exception $e) {
+            throw new PaymentException('An error occurred while processing the Blik payment: ' . $e->getMessage());
+        }
     }
 
     public function refundPayment(string $transactionId, float $amountValue, string $amountCurrency, array $customerInfo = []): array
