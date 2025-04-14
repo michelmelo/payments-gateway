@@ -2,6 +2,9 @@
 
 namespace MichelMelo\PaymentGateway\Helpers;
 
+
+use MichelMelo\PaymentGateway\Helpers\Logger; // Adicionado
+
 class PaymentWidget
 {
     /**
@@ -25,6 +28,8 @@ class PaymentWidget
      */
     public static function form(string $formContext, string $formConfig): string
     {
+        Logger::log("Payment data: " . json_encode($formContext));
+        Logger::log("Payment data: " . json_encode($formConfig));
         return "<form class='paymentSPG' spg-context='" . $formContext . "' spg-config='" . $formConfig . "'></form>";
     }
 }

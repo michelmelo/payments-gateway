@@ -8,11 +8,11 @@ use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class BlikService implements PaymentMethodInterface
 {
-    protected $paymentType;
+    protected $payment_type;
     protected $paymentMethod = 'blik';
-    protected $amount_value;
+    protected $value;
     protected $order_id;
-    protected $amount_currency;
+    protected $currency;
     protected $transactionID = null;
 
     private $apiEndpoint = '/api/v1/payments';
@@ -20,7 +20,7 @@ class BlikService implements PaymentMethodInterface
     public function processPayment(array $paymentData): array
     {
         // Valida os dados de pagamento
-        $this->validatePaymentData($paymentData);
+        //$this->validatePaymentData($paymentData);
 
         // Monta o corpo da requisição
         $body = [
@@ -33,11 +33,11 @@ class BlikService implements PaymentMethodInterface
                 'transactionTimestamp' => date("Y-m-d\TH:i:s.v\Z"),
                 'description'          => "{$this->transactionDescription} {$this->merchantTransactionId} terminalId={$this->TerminalID}",
                 'moto'                 => false,
-                'paymentType'          => $this->paymentType,
+                'payment_type'          => $this->payment_type,
                 'paymentMethod'        => $this->paymentMethod,
                 'amount'               => [
-                    'value'    => $this->amount_value,
-                    'currency' => $this->amount_currency,
+                    'value'    => $this->value,
+                    'currency' => $this->currency,
                 ],
             ],
         ];
@@ -113,13 +113,13 @@ class BlikService implements PaymentMethodInterface
 
     private function validatePaymentData(array $paymentData): void
     {
-        if (empty($paymentData['paymentType']) || empty($paymentData['amount_value']) || empty($paymentData['amount_currency']) || empty($paymentData['order_id'])) {
+        if (empty($paymentData['payment_type']) || empty($paymentData['value']) || empty($paymentData['currency']) || empty($paymentData['order_id'])) {
             throw new PaymentException('Invalid payment data provided.');
         }
 
-        $this->paymentType     = $paymentData['paymentType'];
-        $this->amount_value    = $paymentData['amount_value'];
-        $this->amount_currency = $paymentData['amount_currency'];
+        $this->payment_type     = $paymentData['payment_type'];
+        $this->value    = $paymentData['value'];
+        $this->currency = $paymentData['currency'];
         $this->order_id        = $paymentData['order_id'];
     }
 
