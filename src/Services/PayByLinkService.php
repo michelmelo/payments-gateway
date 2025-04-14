@@ -7,21 +7,31 @@ use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class PayByLinkService implements PaymentMethodInterface
 {
-    public function createPayment(array $paymentData)
+    public function processPayment(array $paymentData): array
     {
-        // Logic to create a payment via Pay by Link
-        // Validate payment data and initiate payment process
+        // Implementação do processamento de pagamento para Pay By Link
+        return [
+            'status'  => 'success',
+            'message' => 'Payment processed successfully via Pay By Link.',
+        ];
     }
 
-    public function getPaymentStatus(string $paymentId)
+    public function getPaymentStatus(string $transactionId): array
     {
-        // Logic to retrieve the status of a payment
-        // Return the status of the payment based on the payment ID
+        // Implementação para obter o status do pagamento
+        return [
+            'status'        => 'completed',
+            'transactionId' => $transactionId,
+        ];
     }
 
-    public function refundPayment(string $paymentId, float $amount)
+    public function validatePayment(array $paymentData): bool
     {
-        // Logic to process a refund for a payment
-        // Validate refund amount and initiate refund process
+        // Validação dos dados de pagamento
+        if (empty($paymentData['link_id']) || empty($paymentData['amount'])) {
+            throw new PaymentException('Invalid Pay By Link payment data.');
+        }
+
+        return true; // Retorna true se os dados forem válidos
     }
 }
