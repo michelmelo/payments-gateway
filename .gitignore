@@ -1,2 +1,4 @@
 vendor/
 tests/manual-test-payment.php
+logs/payment-gateway.log
+tests/manual-test-payment.php

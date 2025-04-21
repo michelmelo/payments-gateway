@@ -30,12 +30,12 @@ class PaymentGateway
         $this->paymentType = $paymentType;
         $this->url         = $url;
 
-        $this->services['mbway']      = new MbWayService();
-        $this->services['multibanco'] = new MultibancoService();
-        $this->services['card']       = new CardService();
-        $this->services['xpay']       = new XPayService();
-        $this->services['blik']       = new BlikService();
-        $this->services['paybylink']  = new PayByLinkService();
+        //$this->services['mbway']      = new MbWayService($this->url);
+        //$this->services['multibanco'] = new MultibancoService($this->url);
+        $this->services['card']       = new CardService($this->url);
+        $this->services['xpay']       = new XPayService($this->url);
+        $this->services['blik']       = new BlikService($this->url);
+        $this->services['paybylink']  = new PayByLinkService($this->url);
     }
 
     public function processPayment($method, $data, $customer)
@@ -64,5 +64,18 @@ class PaymentGateway
 
         // Processa o pagamento
         return $service->processPayment($data);
+    }
+    public function config($paymentMethod,$language, $currencies, $redirectUrl)
+    {
+        $config = [
+            'paymentMethodList'         => [$paymentMethod],
+            'paymentMethodsforCheckout' => [$paymentMethod],
+            'language'                  => $language,
+            'currencies'                => $currencies,
+            'redirectUrl'               => $redirectUrl,
+
+        ];
+
+        return json_encode($config);
     }
 }
