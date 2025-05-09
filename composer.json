@@ -11,6 +11,7 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "phpunit/phpunit": "^9.0"
     },
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "MichelMelo\\PaymentGateway\\": "src/"
