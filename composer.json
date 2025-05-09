@@ -3,7 +3,7 @@
     "description": "A payment gateway SDK for various payment methods including MBWay, Multibanco, and international options.",
     "type": "library",
     "require": {
-        "php": "^7.4|^8.0|^8.1|^8.2",
+        "php": ">=7.1.0",
         "guzzlehttp/guzzle": "^7.0",
         "symfony/var-dumper": "^7.2"
     },
@@ -25,6 +25,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "release": "standard-version"
     }
 }
