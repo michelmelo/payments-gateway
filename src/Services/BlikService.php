@@ -101,13 +101,28 @@ class BlikService implements PaymentMethodInterface
         return $response;
     }
 
-    public function getPaymentStatus(string $transactionId): array
+    public function getPaymentStatus(string $transactionId, string $bearerToken, string $clientId): array
     {
-        // Implementação para obter o status do pagamento
-        return [
-            'status'        => 'completed',
-            'transactionId' => $transactionId,
+        // Valida os dados de entrada
+        if (empty($transactionId) || empty($bearerToken) || empty($clientId)) {
+            throw new PaymentException('Invalid parameters provided for payment status check.');
+        }
+
+        // Monta o endpoint
+        $endpoint = $this->apiEndpoint . '/' . $transactionId . '/status';
+        $headers = [
+            'Authorization'   => 'Bearer ' . $bearerToken,
+            'X-IBM-Client-Id' => $clientId,
+            'Accept'          => 'application/json',
+            'Content-Type'    => 'application/json',
         ];
+        $options = [
+            'headers' => $headers
+        ];
+        $response = $this->sendRequest('GET', $endpoint, $options);
+        Logger::log("response data: " . json_encode($response)); // Log
+
+        return $response;
     }
 
     public function validatePayment(array $paymentData): bool
