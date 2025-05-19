@@ -66,7 +66,7 @@ class PayByLinkService implements PaymentMethodInterface
                 'headers' => $headers,
                 'body'    => json_encode($body),
             ]);
-            Debug::printRequest('response', print_r($response, true));
+            //Debug::printRequest('response', print_r($response, true));
 
             if ($response['returnStatus']["statusMsg"] !== 'Success') {
                 throw new PaymentException('Failed to process CARD payment: ' . $response['message']);

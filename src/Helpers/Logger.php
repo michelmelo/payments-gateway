@@ -5,7 +5,7 @@ namespace MichelMelo\PaymentGateway\Helpers;
 class Logger
 {
     private static $enabled = true; // Controle para ativar/desativar o log
-    private static $logFile = __DIR__ . '/../../logs/payment-gateway.log';
+    private static $logFile = __DIR__ . '/'._PS_MODULE_DIR_.'/logs/payment-gateway.log';
 
     /**
      * Ativa o sistema de log.
