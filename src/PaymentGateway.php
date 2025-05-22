@@ -50,15 +50,16 @@ class PaymentGateway
         $service = $this->services[$method];
 
         // Valida os dados de pagamento
-        $service->validatePayment($data);
-
-        // Add the required data to the payment request
-        $data['bearerToken'] = $this->bearerToken;
-        $data['clientId']    = $this->clientId;
-        $data['terminalId']  = $this->terminalId;
-        $data['paymentType'] = $this->paymentType;
-        $data['url']         = $this->url;
-        $data['customer']    = $customer;
+        if (!isset($data)) {
+            $service->validatePayment($data);
+            // Add the required data to the payment request
+            $data['bearerToken'] = $this->bearerToken;
+            $data['clientId']    = $this->clientId;
+            $data['terminalId']  = $this->terminalId;
+            $data['paymentType'] = $this->paymentType;
+            $data['url']         = $this->url;
+            $data['customer']    = $customer;
+        }
 
         Logger::log("Payment data: " . json_encode($data)); // Log
 
