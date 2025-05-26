@@ -57,9 +57,9 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { context } = require('@actions/github');
             const tagName = process.env.NEW_TAG || context.ref.replace('refs/tags/', '');
-            const changelog = require('fs').existsSync('CHANGELOG.md') ? require('fs').readFileSync('CHANGELOG.md', 'utf8') : '';
+            const fs = require('fs');
+            const changelog = fs.existsSync('CHANGELOG.md') ? fs.readFileSync('CHANGELOG.md', 'utf8') : '';
             return {
               tag_name: tagName,
               name: `Release ${tagName}`,
