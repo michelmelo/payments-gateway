@@ -2,29 +2,37 @@
 
 Todos os principais eventos e alterações neste projeto.
 
-## [Unreleased]
-
-### Adicionado
-- Implementação inicial do SDK de Gateway de Pagamentos.
-
-### Alterado
-- Refatoração do estilo de código e organização nos serviços de pagamento e testes para consistência.
-- Refatoração dos serviços `CardService` e `MbWayService` para implementar métodos de processamento de pagamento e recuperação de status.
-- Refatoração dos namespaces de teste e atualização dos testes do gateway de pagamento.
-
-### Corrigido
-- Correção de problemas menores no código.
-
----
-
-## [0.1.0] - 2025-04-14
-
-### Adicionado
-- Implementação do processamento de pagamento, reembolso e métodos de recuperação de status para pagamentos Blik.
-
----
-
-## Histórico de Commits
+- 2a0e145 2025-05-26 fix: Update release workflow to enhance permissions and ensure GITHUB_TOKEN is set for tag creation  (HEAD -> main, tag: v0.1.6, origin/main)
+- fa942cc 2025-05-26 fix: Refactor release script to improve file system access for changelog
+- 87d460c 2025-05-26 feat: Update release workflow to automatically bump version tags and create GitHub releases
+- 529a228 2025-05-22 fix: Update PaymentGateway to validate payment data and include bearer token and client ID in payment request
+- 3116715 2025-05-19 fix: Update Logger class to set correct log file path and ensure log directory creation
+- 298d049 2025-05-19 fix: Correct log file path and ensure log directory creation in Logger class
+- 4ac7404 2025-05-19 feat: Enhance getPaymentStatus method to include bearer token and client ID validation  (tag: v0.1.5)
+- c7c23bd 2025-05-19 Merge branch 'main' of https://github.com/michelmelo/payments-gateway
+- c72a89a 2025-05-19 refactor: Update log file path and comment out debug print statements in payment services
+- cd5e70e 2025-05-09 fix: Update PHP version requirement and add composer.lock to .gitignore  (tag: v0.1.4)
+- 5c6ebb9 2025-05-09 Implement code changes to enhance functionality and improve performance  (tag: v0.1.3)
+- afb9350 2025-05-09 chore: Update dependencies and adjust PHP version requirement in composer.lock
+- 4fedbdf 2025-05-09 fix: Update PHP version requirement and add release script to composer.json  (tag: v0.1.2)
+- 81758d0 2025-05-09 docs: Update CHANGELOG with initial SDK implementation and recent changes
+- 8805717 2025-05-09 feat: Add GitHub Actions workflow for release automation and update license in composer.json  (tag: v0.1.1)
+- afb90aa 2025-04-21 feat: Add Debug Helper and Enhance Payment Services  (tag: 0.1.0)
+- 9a2afbc 2025-04-14 Refactor BlikService and PaymentWidget for improved variable naming and logging
+- f8b522f 2025-04-14 Refactor processPayment method in BlikService to enhance payment request structure and error handling
+- d38b1dd 2025-04-14 Fix namespace declaration in PaymentException for correct namespacing
+- fc32488 2025-04-14 Refactor processPayment method in PaymentGateway to improve service handling and validation
+- 0dd3762 2025-04-14 Refactor PayByLinkService methods for clarity and consistency in payment processing
+- 7e13caf 2025-04-14 Refactor BlikService payment processing and status retrieval methods for improved clarity and functionality
+- 7100527 2025-04-14 Add return type declarations for processPayment and getPaymentStatus methods in XPayService
+- 8a58dbd 2025-04-14 Implement validatePayment method in CardService for payment data validation
+- aecc27e 2025-04-14 Refactor MultibancoService methods for clarity and consistency in payment processing
+- 4528d39 2025-04-14 Change validatePayment method return type to bool and add return statement
+- d10e7ec 2025-04-14 Refactor MbWayService payment processing implementation and improve code clarity
+- a174901 2025-04-14 Add manual test script for payment processing using PaymentGateway and PaymentWidget
+- 74ca6e4 2025-04-14 Add logging functionality to PaymentGateway and BlikService for better traceability
+- 569ab10 2025-04-14 Add PaymentWidget class for generating payment scripts and forms in the SDK
+- 6dfb145 2025-04-14 Add script to generate changelog from Git commits
 - bb4f373 2025-04-14 Refactor code style and organization across payment services and tests for consistency
 - 5462e87 2025-04-14 Implement Blik payment processing, refund, and status retrieval methods
 - 14b9e40 2025-04-14 fixed

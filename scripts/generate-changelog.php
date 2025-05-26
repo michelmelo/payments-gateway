@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Script para gerar um changelog com base nos commits do Git.
+ * Script para gerar um changelog com base nos commits do Git, incluindo tags.
  */
 
 // Define o arquivo de saída do changelog
 $outputFile = __DIR__ . '/../CHANGELOG.md';
 
-// Executa o comando Git para obter os commits
-exec('git log --pretty=format:"%h %ad %s" --date=short', $output);
+// Executa o comando Git para obter os commits com tags (se houver)
+exec('git log --pretty=format:"%h %ad %s %d" --date=short', $output);
 
 // Verifica se há commits
 if (empty($output)) {
@@ -22,6 +22,8 @@ $changelog .= "Todos os principais eventos e alterações neste projeto.\n\n";
 
 // Adiciona os commits ao changelog
 foreach ($output as $line) {
+    // Limpa parênteses vazios se não houver tag
+    $line = preg_replace('/\s+\(\)/', '', $line);
     $changelog .= "- " . $line . "\n";
 }
 
