@@ -1,26 +1,56 @@
-name: Create Release
+name: Auto Release
 
 on:
   push:
-    tags:
-      - 'v*' # Dispara quando um tag que começa com "v" é criado (ex: v1.0.0)
+    branches:
+      - main # ou a branch que desejar monitorar
 
 jobs:
   release:
-    name: Generate Release
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # necessário para buscar todas as tags
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1' # Ajuste para a versão do PHP usada no projeto
+          php-version: '8.1'
 
       - name: Install dependencies
         run: composer install --no-dev --prefer-dist
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          latest_tag=$(git tag --sort=-v:refname | head -n 1)
+          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
+
+      - name: Bump tag
+        id: bump_tag
+        run: |
+          if [ -z "${{ steps.get_tag.outputs.latest_tag }}" ]; then
+            new_tag="v1.0.0"
+          else
+            latest=${{ steps.get_tag.outputs.latest_tag }}
+            prefix=${latest%%[0-9]*}
+            version=${latest#$prefix}
+            IFS='.' read -r major minor patch <<< "$version"
+            patch=$((patch + 1))
+            new_tag="${prefix}${major}.${minor}.${patch}"
+          fi
+          echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
+
+      - name: Create new tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.bump_tag.outputs.new_tag }}
+          git push origin ${{ steps.bump_tag.outputs.new_tag }}
 
       - name: Generate Release Notes
         id: generate_release_notes
@@ -28,8 +58,8 @@ jobs:
         with:
           script: |
             const { context } = require('@actions/github');
-            const tagName = context.ref.replace('refs/tags/', '');
-            const changelog = require('fs').readFileSync('CHANGELOG.md', 'utf8');
+            const tagName = process.env.NEW_TAG || context.ref.replace('refs/tags/', '');
+            const changelog = require('fs').existsSync('CHANGELOG.md') ? require('fs').readFileSync('CHANGELOG.md', 'utf8') : '';
             return {
               tag_name: tagName,
               name: `Release ${tagName}`,
@@ -37,11 +67,13 @@ jobs:
               draft: false,
               prerelease: false
             };
+        env:
+          NEW_TAG: ${{ steps.bump_tag.outputs.new_tag }}
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.generate_release_notes.outputs.tag_name }}
+          tag_name: ${{ steps.bump_tag.outputs.new_tag }}
           release_name: ${{ steps.generate_release_notes.outputs.name }}
           body: ${{ steps.generate_release_notes.outputs.body }}
         env:
