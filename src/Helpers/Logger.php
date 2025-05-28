@@ -30,11 +30,11 @@ class Logger
      */
     public static function log(string $message): void
     {
-        if (!self::$enabled) {
+        if (! self::$enabled) {
             return;
         }
 
-        $timestamp = date('Y-m-d H:i:s');
+        $timestamp        = date('Y-m-d H:i:s');
         $formattedMessage = "[{$timestamp}] {$message}\n";
 
         file_put_contents(self::$logFile, $formattedMessage, FILE_APPEND);

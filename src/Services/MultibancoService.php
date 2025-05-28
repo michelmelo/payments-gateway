@@ -3,12 +3,11 @@
 namespace MichelMelo\PaymentGateway\Services;
 
 use MichelMelo\PaymentGateway\Exceptions\PaymentException;
-use MichelMelo\PaymentGateway\Helpers\Logger;
-use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
-use MichelMelo\PaymentGateway\Helpers\Utils;
 use MichelMelo\PaymentGateway\Helpers\Debug;
+use MichelMelo\PaymentGateway\Helpers\Logger;
 use MichelMelo\PaymentGateway\Helpers\PaymentWidget;
-
+use MichelMelo\PaymentGateway\Helpers\Utils;
+use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
 class MultibancoService implements PaymentMethodInterface
 {
@@ -41,7 +40,7 @@ class MultibancoService implements PaymentMethodInterface
                 'transactionTimestamp' => date("Y-m-d\TH:i:s.v\Z"),
                 'description'          => "teste {$paymentData['order_id']} terminalId={$paymentData['terminalId']}",
                 'moto'                 => false,
-                'paymentType'         => $paymentData['payment_type'],
+                'paymentType'          => $paymentData['payment_type'],
                 'paymentMethod'        => $this->paymentMethod,
                 'amount'               => [
                     'value'    => $paymentData['value'],
@@ -59,7 +58,7 @@ class MultibancoService implements PaymentMethodInterface
             'X-IBM-Client-Id' => $paymentData['clientId'],
         ];
 
-        Logger::log("sendRequest... ");
+        Logger::log('sendRequest... ');
 
         try {
             // Envia a requisição para o endpoint
@@ -69,7 +68,7 @@ class MultibancoService implements PaymentMethodInterface
             ]);
             //Debug::printRequest('response', print_r($response, true));
 
-            if ($response['returnStatus']["statusMsg"] !== 'Success') {
+            if ($response['returnStatus']['statusMsg'] !== 'Success') {
                 throw new PaymentException('Failed to process CARD payment: ' . $response['message']);
             }
 
@@ -93,7 +92,7 @@ class MultibancoService implements PaymentMethodInterface
         ];
 
         $response = $this->sendRequest('POST', $endpoint, $requestBody);
-        Logger::log("response data: " . json_encode($response)); // Log
+        Logger::log('response data: ' . json_encode($response)); // Log
 
         if ($response['status'] !== 'success') {
             throw new PaymentException('Failed to refund CARD payment: ' . $response['message']);
@@ -111,17 +110,17 @@ class MultibancoService implements PaymentMethodInterface
 
         // Monta o endpoint
         $endpoint = $this->apiEndpoint . '/' . $transactionId . '/status';
-        $headers = [
+        $headers  = [
             'Authorization'   => 'Bearer ' . $bearerToken,
             'X-IBM-Client-Id' => $clientId,
             'Accept'          => 'application/json',
             'Content-Type'    => 'application/json',
         ];
         $options = [
-            'headers' => $headers
+            'headers' => $headers,
         ];
         $response = $this->sendRequest('GET', $endpoint, $options);
-        Logger::log("response data: " . json_encode($response)); // Log
+        Logger::log('response data: ' . json_encode($response)); // Log
 
         return $response;
     }
@@ -152,23 +151,24 @@ class MultibancoService implements PaymentMethodInterface
     {
         $url = $this->url . $endpoint;
 
-        Logger::log("options: " . json_encode($options));
+        Logger::log('options: ' . json_encode($options));
 
         try {
             // Use Guzzle para fazer a requisição HTTP
-            $client = new \GuzzleHttp\Client();
+            $client   = new \GuzzleHttp\Client();
             $response = $client->request($method, $url, $options);
 
             // Decodifica a resposta JSON
             $responseBody = json_decode($response->getBody()->getContents(), true);
 
-            Logger::log("responseBody: " . json_encode($responseBody));
+            Logger::log('responseBody: ' . json_encode($responseBody));
 
             // Retorna a resposta decodificada
             return $responseBody;
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             // Loga o erro e lança uma exceção personalizada
-            Logger::log("HTTP Request failed: " . $e->getMessage());
+            Logger::log('HTTP Request failed: ' . $e->getMessage());
+
             throw new PaymentException('HTTP Request failed: ' . $e->getMessage());
         }
     }

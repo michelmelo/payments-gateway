@@ -39,7 +39,7 @@ class Utils
 
 class Debug
 {
-    public static $debugLog = false;
+    public static $debugLog     = false;
     public static $debugLogFile = 'debug.log';
 
     public static function printRequest($method, $endpoint)

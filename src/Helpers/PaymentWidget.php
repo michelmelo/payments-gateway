@@ -28,8 +28,9 @@ class PaymentWidget
      */
     public static function form(string $formContext, string $formConfig): string
     {
-        Logger::log("Payment data: " . json_encode($formContext));
-        Logger::log("Payment data: " . json_encode($formConfig));
+        Logger::log('Payment data: ' . json_encode($formContext));
+        Logger::log('Payment data: ' . json_encode($formConfig));
+
         return "<form class='paymentSPG' spg-context='" . $formContext . "' spg-config='" . $formConfig . "'></form>";
     }
 
@@ -41,7 +42,7 @@ class PaymentWidget
      */
     public static function MmDebug(...$vars): void
     {
-        if (!in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && !headers_sent()) {
+        if (! in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && ! headers_sent()) {
             header('HTTP/1.1 500 Internal Server Error');
         }
 

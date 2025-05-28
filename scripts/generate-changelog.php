@@ -13,6 +13,7 @@ exec('git log --pretty=format:"%h %ad %s %d" --date=short', $output);
 // Verifica se há commits
 if (empty($output)) {
     echo "Nenhum commit encontrado.\n";
+
     exit(1);
 }
 
@@ -24,7 +25,7 @@ $changelog .= "Todos os principais eventos e alterações neste projeto.\n\n";
 foreach ($output as $line) {
     // Limpa parênteses vazios se não houver tag
     $line = preg_replace('/\s+\(\)/', '', $line);
-    $changelog .= "- " . $line . "\n";
+    $changelog .= '- ' . $line . "\n";
 }
 
 // Salva o changelog no arquivo

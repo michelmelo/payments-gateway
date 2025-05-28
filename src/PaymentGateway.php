@@ -42,15 +42,16 @@ class PaymentGateway
     {
         Logger::log("Processing payment with method: {$method}"); // Log
 
-        if (!isset($this->services[$method])) {
+        if (! isset($this->services[$method])) {
             Logger::log("Payment method not supported: {$method}"); // Log
+
             throw new PaymentException('Payment method not supported.');
         }
 
         $service = $this->services[$method];
 
         // Valida os dados de pagamento
-        if (!isset($data)) {
+        if (! isset($data)) {
             $service->validatePayment($data);
             // Add the required data to the payment request
             $data['bearerToken'] = $this->bearerToken;
@@ -58,14 +59,14 @@ class PaymentGateway
             $data['terminalId']  = $this->terminalId;
             $data['paymentType'] = $this->paymentType;
             $data['url']         = $this->url;
-            
         }
         $data['customer']    = $customer;
 
         // Processa o pagamento
         return $service->processPayment($data);
     }
-    public function config($paymentMethod,$language, $currencies, $redirectUrl)
+
+    public function config($paymentMethod, $language, $currencies, $redirectUrl)
     {
         $config = [
             'paymentMethodList'         => [$paymentMethod],
