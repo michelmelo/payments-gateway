@@ -13,7 +13,7 @@ use MichelMelo\PaymentGateway\Services\XPayService;
 
 class PaymentGateway
 {
-    private $services = [];
+    public $services = [];
     private $bearerToken;
     private $clientId;
     private $terminalId;
@@ -58,10 +58,9 @@ class PaymentGateway
             $data['terminalId']  = $this->terminalId;
             $data['paymentType'] = $this->paymentType;
             $data['url']         = $this->url;
-            $data['customer']    = $customer;
+            
         }
-
-        Logger::log("Payment data: " . json_encode($data)); // Log
+        $data['customer']    = $customer;
 
         // Processa o pagamento
         return $service->processPayment($data);
