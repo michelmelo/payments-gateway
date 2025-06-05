@@ -5,7 +5,9 @@ namespace MichelMelo\PaymentGateway\Helpers;
 class Logger
 {
     private static $enabled = true; // Controle para ativar/desativar o log
-    private static $logFile = __DIR__ . '/../../logs/payment-gateway.log';
+    //private static $logFile = __DIR__ . '/../../logs/payment-gateway.log';
+    private static $logFile = _PS_MODULE_DIR_ . 'sibsgateway/logs/payment-gateway.log';
+    //Logger::log($input, _PS_MODULE_DIR_ . 'sibsgateway/logs/webhook.log');
 
     /**
      * Ativa o sistema de log.
@@ -37,7 +39,7 @@ class Logger
 
         $timestamp        = date('c'); // ISO 8601
         $formattedMessage = "{$timestamp} {$message}\n";
-        $logFile = $file ?? self::$logFile;
+        $logFile          = $file ?? self::$logFile;
 
         file_put_contents($logFile, $formattedMessage, FILE_APPEND);
     }
