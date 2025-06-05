@@ -2,7 +2,9 @@
 
 Todos os principais eventos e alterações neste projeto.
 
-- 5087b08 2025-05-28 clean  (HEAD -> main, tag: v0.1.8, origin/main)
+- 9ad420c 2025-06-05 fix: Refactor Logger class to improve log file path handling and formatting  (HEAD -> main, origin/main)
+- 6af615b 2025-06-05 fix: Update Logger class to allow optional log file path and use ISO 8601 timestamp format  (tag: v0.1.9)
+- 5087b08 2025-05-28 clean  (tag: v0.1.8)
 - 780e5de 2025-05-28 fixed code
 - 6a5fc94 2025-05-28 fix services
 - c7dd9e3 2025-05-26 fix: Update generate-changelog script to include tags in the output and improve comments  (tag: v0.1.7)
