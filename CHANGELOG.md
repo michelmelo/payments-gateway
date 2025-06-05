@@ -2,7 +2,11 @@
 
 Todos os principais eventos e alterações neste projeto.
 
-- 2a0e145 2025-05-26 fix: Update release workflow to enhance permissions and ensure GITHUB_TOKEN is set for tag creation  (HEAD -> main, tag: v0.1.6, origin/main)
+- 5087b08 2025-05-28 clean  (HEAD -> main, tag: v0.1.8, origin/main)
+- 780e5de 2025-05-28 fixed code
+- 6a5fc94 2025-05-28 fix services
+- c7dd9e3 2025-05-26 fix: Update generate-changelog script to include tags in the output and improve comments  (tag: v0.1.7)
+- 2a0e145 2025-05-26 fix: Update release workflow to enhance permissions and ensure GITHUB_TOKEN is set for tag creation  (tag: v0.1.6)
 - fa942cc 2025-05-26 fix: Refactor release script to improve file system access for changelog
 - 87d460c 2025-05-26 feat: Update release workflow to automatically bump version tags and create GitHub releases
 - 529a228 2025-05-22 fix: Update PaymentGateway to validate payment data and include bearer token and client ID in payment request

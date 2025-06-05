@@ -27,16 +27,18 @@ class Logger
      * Registra uma mensagem no log.
      *
      * @param string $message
+     * @param string|null $file Caminho do arquivo de log (opcional)
      */
-    public static function log(string $message): void
+    public static function log(string $message, string $file = null): void
     {
         if (! self::$enabled) {
             return;
         }
 
-        $timestamp        = date('Y-m-d H:i:s');
-        $formattedMessage = "[{$timestamp}] {$message}\n";
+        $timestamp        = date('c'); // ISO 8601
+        $formattedMessage = "{$timestamp} {$message}\n";
+        $logFile = $file ?? self::$logFile;
 
-        file_put_contents(self::$logFile, $formattedMessage, FILE_APPEND);
+        file_put_contents($logFile, $formattedMessage, FILE_APPEND);
     }
 }
