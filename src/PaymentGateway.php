@@ -65,6 +65,20 @@ class PaymentGateway
         // Processa o pagamento
         return $service->processPayment($data);
     }
+    public function refundPayment($method, $transactionId, $amountValue, $amountCurrency, $customerInfo = [])
+    {
+        Logger::log("Refund payment with method: {$method}"); // Log
+
+        if (!isset($this->services[$method])) {
+            Logger::log("Refund method not supported: {$method}"); // Log
+            throw new PaymentException('Refund method not supported.');
+        }
+
+        $service = $this->services[$method];
+
+        // Chama o método refundPayment do serviço correspondente
+        return $service->refundPayment($transactionId, $amountValue, $amountCurrency, $customerInfo);
+    }
 
     public function config($paymentMethod, $language, $currencies, $redirectUrl)
     {
