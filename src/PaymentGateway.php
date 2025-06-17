@@ -65,12 +65,14 @@ class PaymentGateway
         // Processa o pagamento
         return $service->processPayment($data);
     }
+
     public function refundPayment($method, $transactionId, $amountValue, $amountCurrency, $customerInfo = [])
     {
         Logger::log("Refund payment with method: {$method}"); // Log
 
-        if (!isset($this->services[$method])) {
+        if (! isset($this->services[$method])) {
             Logger::log("Refund method not supported: {$method}"); // Log
+
             throw new PaymentException('Refund method not supported.');
         }
 
@@ -99,5 +101,28 @@ class PaymentGateway
         ];
 
         return json_encode($config);
+    }
+
+    public function getPaymentStatus($method, $transactionId, $customerInfo = [])
+    {
+        Logger::log("Get payment status with method: {$method}"); // Log
+
+        if (! isset($this->services[$method])) {
+            Logger::log("Get status method not supported: {$method}"); // Log
+
+            throw new PaymentException('Get status method not supported.');
+        }
+
+        $service = $this->services[$method];
+
+        // Adiciona os parâmetros necessários ao array de informações do cliente
+        $customerInfo['bearerToken'] = $this->bearerToken;
+        $customerInfo['clientId']    = $this->clientId;
+        $customerInfo['terminalId']  = $this->terminalId;
+        $customerInfo['paymentType'] = $this->paymentType;
+        $customerInfo['url']         = $this->url;
+
+        // Chama o método getPaymentStatus do serviço correspondente
+        return $service->getPaymentStatus($transactionId, $this->bearerToken, $this->clientId);
     }
 }

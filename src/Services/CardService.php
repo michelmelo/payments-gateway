@@ -93,17 +93,19 @@ class CardService implements PaymentMethodInterface
         // Monta o corpo da requisição conforme o exemplo do curl
         $body = [
             'merchant' => [
-                'terminalId'            => $data['terminalId'],
-                'channel'               => $data['channel'] ?? 'arzacodajie',
-                'merchantTransactionId' => $data['merchantTransactionId'] ?? '',
+                'terminalId'             => $data['terminalId'],
+                'channel'                => 'web',
+                'merchantTransactionId'  => $data['merchantTransactionId'] ?? '',
+                'transactionDescription' => 'Transaction Checkout for order number 402 terminalId 261',
+                'websiteAddress'         => 'https://devshop-765913.shoparena.pl',
             ],
             'transaction' => [
-                'amount' => [
+                'transactionTimestamp' => $data['transactionTimestamp'] ?? '',
+                'description'          => $data['description'] ?? '',
+                'amount'               => [
                     'value'    => $amountValue,
                     'currency' => $amountCurrency,
                 ],
-                'description' => $data['description'] ?? '',
-                'transactionTimestamp' => $data['transactionTimestamp'] ?? '',
                 'originalTransaction' => [
                     'id'       => $data['originalTransactionId'] ?? '',
                     'datetime' => $data['originalTransactionDatetime'] ?? '',
@@ -117,7 +119,7 @@ class CardService implements PaymentMethodInterface
         ]);
         Logger::log('response data: ' . json_encode($response)); // Log
 
-        if (!isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
+        if (! isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
             throw new PaymentException('Failed to refund CARD payment: ' . ($response['message'] ?? 'Unknown error'));
         }
 
