@@ -76,6 +76,13 @@ class PaymentGateway
 
         $service = $this->services[$method];
 
+        // Adiciona os parâmetros necessários ao array de informações do cliente
+        $customerInfo['bearerToken'] = $this->bearerToken;
+        $customerInfo['clientId']    = $this->clientId;
+        $customerInfo['terminalId']  = $this->terminalId;
+        $customerInfo['paymentType'] = $this->paymentType;
+        $customerInfo['url']         = $this->url;
+
         // Chama o método refundPayment do serviço correspondente
         return $service->refundPayment($transactionId, $amountValue, $amountCurrency, $customerInfo);
     }

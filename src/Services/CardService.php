@@ -19,7 +19,7 @@ class CardService implements PaymentMethodInterface
     protected $transactionID = null;
     protected $url;
 
-    private $apiEndpoint = '/api/v1/payments';
+    private $apiEndpoint = 'api/v1/payments';
 
     public function __construct($url)
     {
@@ -78,24 +78,47 @@ class CardService implements PaymentMethodInterface
         }
     }
 
-    public function refundPayment(string $transactionId, float $amountValue, string $amountCurrency, array $customerInfo = []): array
+    public function refundPayment(string $transactionId, float $amountValue, string $amountCurrency, array $data = []): array
     {
         $endpoint = $this->apiEndpoint . '/' . $transactionId . '/refund';
 
-        $requestBody = [
-            'transactionId' => $transactionId,
-            'amount'        => [
-                'value'    => $amountValue,
-                'currency' => $amountCurrency,
-            ],
-            'customerInfo' => $customerInfo,
+        // Monta os cabeçalhos conforme o exemplo do curl
+        $headers = [
+            'Accept'          => 'application/json, text/javascript, */*; q=0.01',
+            'Content-Type'    => 'application/json',
+            'Authorization'   => 'Bearer ' . $data['bearerToken'],
+            'X-IBM-Client-Id' => $data['clientId'],
         ];
 
-        $response = $this->sendRequest('POST', $endpoint, $requestBody);
+        // Monta o corpo da requisição conforme o exemplo do curl
+        $body = [
+            'merchant' => [
+                'terminalId'            => $data['terminalId'],
+                'channel'               => $data['channel'] ?? 'arzacodajie',
+                'merchantTransactionId' => $data['merchantTransactionId'] ?? '',
+            ],
+            'transaction' => [
+                'amount' => [
+                    'value'    => $amountValue,
+                    'currency' => $amountCurrency,
+                ],
+                'description' => $data['description'] ?? '',
+                'transactionTimestamp' => $data['transactionTimestamp'] ?? '',
+                'originalTransaction' => [
+                    'id'       => $data['originalTransactionId'] ?? '',
+                    'datetime' => $data['originalTransactionDatetime'] ?? '',
+                ],
+            ],
+        ];
+
+        $response = $this->sendRequest('POST', $endpoint, [
+            'headers' => $headers,
+            'body'    => json_encode($body),
+        ]);
         Logger::log('response data: ' . json_encode($response)); // Log
 
-        if ($response['status'] !== 'success') {
-            throw new PaymentException('Failed to refund CARD payment: ' . $response['message']);
+        if (!isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
+            throw new PaymentException('Failed to refund CARD payment: ' . ($response['message'] ?? 'Unknown error'));
         }
 
         return $response;
