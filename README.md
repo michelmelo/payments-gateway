@@ -150,6 +150,7 @@ $response = $paymentGateway->processPayment('multibanco', $data, $customer);
 #### Cartão de Crédito
 
 ```php
+$customer = []; // Se não houver dados específicos de cliente, use um array vazio
 $data = [
     'card_number' => '4111111111111111',
     'expiry_date' => '12/25',
@@ -157,40 +158,43 @@ $data = [
     'amount' => 10.00,
 ];
 
-$response = $paymentGateway->processPayment('card', $data);
+$response = $paymentGateway->processPayment('card', $data, $customer);
 ```
 
 #### XPay
 
 ```php
+$customer = [];
 $data = [
     'xpay_token' => 'your-xpay-token',
     'amount' => 10.00,
 ];
 
-$response = $paymentGateway->processPayment('xpay', $data);
+$response = $paymentGateway->processPayment('xpay', $data, $customer);
 ```
 
 #### Blik
 
 ```php
+$customer = [];
 $data = [
     'blik_code' => '123456',
     'amount' => 10.00,
 ];
 
-$response = $paymentGateway->processPayment('blik', $data);
+$response = $paymentGateway->processPayment('blik', $data, $customer);
 ```
 
 #### Pay By Link
 
 ```php
+$customer = [];
 $data = [
     'email' => 'customer@example.com',
     'amount' => 10.00,
 ];
 
-$response = $paymentGateway->processPayment('paybylink', $data);
+$response = $paymentGateway->processPayment('paybylink', $data, $customer);
 ```
 
 ### Tratamento de Exceções
