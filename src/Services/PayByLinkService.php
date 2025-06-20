@@ -9,6 +9,9 @@ use MichelMelo\PaymentGateway\Helpers\PaymentWidget;
 use MichelMelo\PaymentGateway\Helpers\Utils;
 use MichelMelo\PaymentGateway\Interfaces\PaymentMethodInterface;
 
+/**
+ * Serviço para integração de pagamentos via Pay By Link.
+ */
 class PayByLinkService implements PaymentMethodInterface
 {
     protected $payment_type;
@@ -19,13 +22,25 @@ class PayByLinkService implements PaymentMethodInterface
     protected $transactionID = null;
     protected $url;
 
-    private $apiEndpoint = '/api/v1/payments';
+    private $apiEndpoint = 'api/v1/payments';
 
+    /**
+     * Construtor do serviço Pay By Link.
+     *
+     * @param string $url URL base da API.
+     */
     public function __construct($url)
     {
         $this->url         = $url;
     }
 
+    /**
+     * Processa um pagamento Pay By Link.
+     *
+     * @param array $paymentData Dados do pagamento.
+     * @return array Resposta da API.
+     * @throws PaymentException Em caso de erro no processamento.
+     */
     public function processPayment(array $paymentData): array
     {
         // Monta o corpo da requisição
@@ -78,6 +93,16 @@ class PayByLinkService implements PaymentMethodInterface
         }
     }
 
+    /**
+     * Solicita o estorno (refund) de um pagamento Pay By Link.
+     *
+     * @param string $transactionId ID da transação original.
+     * @param float $amountValue Valor a ser estornado.
+     * @param string $amountCurrency Moeda do estorno.
+     * @param array $customerInfo Informações do cliente e parâmetros adicionais.
+     * @return array Resposta da API.
+     * @throws PaymentException Em caso de erro no estorno.
+     */
     public function refundPayment(string $transactionId, float $amountValue, string $amountCurrency, array $customerInfo = []): array
     {
         $endpoint = $this->apiEndpoint . '/' . $transactionId . '/refund';
@@ -101,6 +126,15 @@ class PayByLinkService implements PaymentMethodInterface
         return $response;
     }
 
+    /**
+     * Consulta o status de um pagamento Pay By Link.
+     *
+     * @param string $transactionId ID da transação.
+     * @param string $bearerToken Token de autenticação.
+     * @param string $clientId ID do cliente.
+     * @return array Resposta da API.
+     * @throws PaymentException Em caso de erro na consulta.
+     */
     public function getPaymentStatus(string $transactionId, string $bearerToken, string $clientId): array
     {
         // Valida os dados de entrada
@@ -125,6 +159,13 @@ class PayByLinkService implements PaymentMethodInterface
         return $response;
     }
 
+    /**
+     * Valida os dados de pagamento Pay By Link.
+     *
+     * @param array $paymentData Dados do pagamento.
+     * @return bool True se os dados forem válidos.
+     * @throws PaymentException Em caso de dados inválidos.
+     */
     public function validatePayment(array $paymentData): bool
     {
         // Validação dos dados de pagamento
@@ -135,6 +176,12 @@ class PayByLinkService implements PaymentMethodInterface
         return true; // Retorna true se os dados forem válidos
     }
 
+    /**
+     * Valida e armazena os dados de pagamento.
+     *
+     * @param array $paymentData Dados do pagamento.
+     * @throws PaymentException Em caso de dados inválidos.
+     */
     private function validatePaymentData(array $paymentData): void
     {
         if (empty($paymentData['payment_type']) || empty($paymentData['value']) || empty($paymentData['currency']) || empty($paymentData['order_id'])) {
@@ -147,6 +194,15 @@ class PayByLinkService implements PaymentMethodInterface
         $this->order_id     = $paymentData['order_id'];
     }
 
+    /**
+     * Envia uma requisição HTTP para a API.
+     *
+     * @param string $method Método HTTP (GET, POST, etc).
+     * @param string $endpoint Endpoint da API.
+     * @param array $options Opções da requisição (headers, body, etc).
+     * @return array Resposta da API.
+     * @throws PaymentException Em caso de erro na requisição.
+     */
     private function sendRequest(string $method, string $endpoint, array $options = []): array
     {
         $url = $this->url . $endpoint;
