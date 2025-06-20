@@ -29,4 +29,15 @@ interface PaymentMethodInterface
      * @return array An associative array containing the payment status details.
      */
     public function getPaymentStatus(string $transactionId, string $bearerToken, string $clientId): array;
+
+    /**
+     * Requests a refund for a given transaction.
+     *
+     * @param string $transactionId The unique identifier of the original transaction.
+     * @param float $amountValue The amount to be refunded.
+     * @param string $amountCurrency The currency of the refund.
+     * @param array $customerInfo An associative array with customer and additional parameters.
+     * @return array An associative array containing the refund result.
+     */
+    public function refundPayment(string $transactionId, float $amountValue, string $amountCurrency, array $customerInfo = []): array;
 }
