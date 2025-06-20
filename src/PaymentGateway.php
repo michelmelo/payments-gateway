@@ -65,6 +65,7 @@ class PaymentGateway
 
         if (! isset($this->services[$method])) {
             Logger::log("Payment method not supported: {$method}"); // Log
+
             throw new PaymentException('Payment method not supported.');
         }
 
@@ -103,6 +104,7 @@ class PaymentGateway
 
         if (! isset($this->services[$method])) {
             Logger::log("Refund method not supported: {$method}"); // Log
+
             throw new PaymentException('Refund method not supported.');
         }
 
@@ -156,6 +158,7 @@ class PaymentGateway
 
         if (! isset($this->services[$method])) {
             Logger::log("Get status method not supported: {$method}"); // Log
+
             throw new PaymentException('Get status method not supported.');
         }
 

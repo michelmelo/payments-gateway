@@ -2,9 +2,11 @@
 
 namespace MichelMelo\PaymentGateway\Exceptions;
 
-if (!class_exists('PrestaShopException')) {
+if (! class_exists('PrestaShopException')) {
     // Garante compatibilidade fora do ambiente PrestaShop
-    class PrestaShopException extends \Exception {}
+    class PrestaShopException extends \Exception
+    {
+    }
 }
 
 /**
