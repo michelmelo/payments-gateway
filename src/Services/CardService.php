@@ -53,7 +53,7 @@ class CardService implements PaymentMethodInterface
             'customer'    => $paymentData['customer'],
             'transaction' => [
                 'transactionTimestamp' => date("Y-m-d\TH:i:s.v\Z"),
-                'description'          => "teste {$paymentData['order_id']} terminalId={$paymentData['terminalId']}",
+                'description'          => $this->generateTransactionDescription('Checkout', $paymentData['order_id'], $paymentData['terminalId']),
                 'moto'                 => false,
                 'paymentType'          => $paymentData['payment_type'],
                 'paymentMethod'        => $this->paymentMethod,
@@ -121,12 +121,12 @@ class CardService implements PaymentMethodInterface
                 'terminalId'             => $data['terminalId'],
                 'channel'                => 'web',
                 'merchantTransactionId'  => $data['merchantTransactionId'] ?? '',
-                'transactionDescription' => 'Transaction Checkout for order number 402 terminalId 261',
+                'transactionDescription' => $this->generateTransactionDescription('Refund', $data['merchantTransactionId'] ?? null, $data['terminalId']),
                 'websiteAddress'         => 'https://devshop-765913.shoparena.pl',
             ],
             'transaction' => [
                 'transactionTimestamp' => $data['transactionTimestamp'] ?? '',
-                'description'          => $data['description'] ?? '',
+                'description'          => $data['description'] ?? $this->generateTransactionDescription('Refund', $data['merchantTransactionId'] ?? null, $data['terminalId']),
                 'amount'               => [
                     'value'    => $amountValue,
                     'currency' => $amountCurrency,
@@ -146,6 +146,60 @@ class CardService implements PaymentMethodInterface
 
         if (! isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
             throw new PaymentException('Failed to refund CARD payment: ' . ($response['message'] ?? 'Unknown error'));
+        }
+
+        return $response;
+    }
+
+    /**
+     * Captura um pagamento pré-autorizado via cartão.
+     *
+     * @param string $transactionId ID da transação original.
+     * @param float $amountValue Valor a ser capturado.
+     * @param string $amountCurrency Moeda da captura.
+     * @param array $data Informações do cliente e parâmetros adicionais.
+     * @return array Resposta da API.
+     * @throws PaymentException Em caso de erro na captura.
+     */
+    public function capturePayment(string $transactionId, float $amountValue, string $amountCurrency, array $data = []): array
+    {
+        $endpoint = $this->apiEndpoint . '/' . $transactionId . '/capture';
+
+        // Monta os cabeçalhos da requisição
+        $headers = [
+            'Authorization'   => 'Bearer ' . $data['bearerToken'],
+            'X-IBM-Client-Id' => $data['clientId'],
+            'Content-Type'    => 'application/json',
+        ];
+
+        // Monta o corpo da requisição conforme o exemplo do curl
+        $body = [
+            'merchant' => [
+                'terminalId'            => $data['terminalId'],
+                'channel'               => 'web',
+                'merchantTransactionId' => $data['merchantTransactionId'] ?? '',
+            ],
+            'transaction' => [
+                'transactionTimestamp' => $data['transactionTimestamp'] ?? date("Y-m-d\TH:i:s.v\Z"),
+                'description'          => $data['description'] ?? $this->generateTransactionDescription('Capture', $data['merchantTransactionId'] ?? null, $data['terminalId']),
+                'amount'               => [
+                    'value'    => $amountValue,
+                    'currency' => $amountCurrency,
+                ],
+                'originalTransaction' => [
+                    'id' => $data['originalTransactionId'] ?? '',
+                ],
+            ],
+        ];
+
+        $response = $this->sendRequest('POST', $endpoint, [
+            'headers' => $headers,
+            'body'    => json_encode($body),
+        ]);
+        Logger::log('capture response data: ' . json_encode($response)); // Log
+
+        if (! isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
+            throw new PaymentException('Failed to capture CARD payment: ' . ($response['message'] ?? 'Unknown error'));
         }
 
         return $response;
@@ -217,6 +271,29 @@ class CardService implements PaymentMethodInterface
         $this->value        = $paymentData['value'];
         $this->currency     = $paymentData['currency'];
         $this->order_id     = $paymentData['order_id'];
+    }
+
+    /**
+     * Gera uma descrição personalizada para a transação.
+     *
+     * @param string $operation Tipo de operação (checkout, refund, capture).
+     * @param string|null $orderId ID do pedido.
+     * @param string|null $terminalId ID do terminal.
+     * @return string Descrição formatada.
+     */
+    private function generateTransactionDescription(string $operation, ?string $orderId = null, ?string $terminalId = null): string
+    {
+        $description = "Transaction {$operation}";
+
+        if ($orderId) {
+            $description .= " for order number {$orderId}";
+        }
+
+        if ($terminalId) {
+            $description .= " terminalId {$terminalId}";
+        }
+
+        return $description;
     }
 
     /**
