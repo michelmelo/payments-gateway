@@ -2,37 +2,36 @@
 
 namespace MichelMelo\PaymentGateway\Exceptions;
 
-if (! class_exists('PrestaShopException')) {
-    // Garante compatibilidade fora do ambiente PrestaShop
-    class PrestaShopException extends \Exception
-    {
-    }
-}
+use Exception;
+use Throwable;
+use MichelMelo\PaymentGateway\Helpers\Logger;
 
 /**
  * Exceção personalizada para erros de pagamento.
  */
-class PaymentException extends PrestaShopException
+class PaymentException extends Exception
 {
     /**
-     * Construtor da exceção de pagamento.
+     * Constructor.
      *
-     * @param string $message Mensagem de erro.
-     * @param int $code Código do erro.
-     * @param \Exception|null $previous Exceção anterior.
+     * @param string $details
+     * @param int $status
+     * @param Throwable|null $previous
      */
-    public function __construct($message = 'An error occurred during payment processing', $code = 0, \Exception $previous = null)
+    public function __construct(string $details = '', int $status = 0, ?Throwable $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($details, $status, $previous);
+
+        Logger::log($this->getErrorMessage());
     }
 
     /**
-     * Retorna a mensagem de erro.
+     * Get Error Message.
      *
      * @return string
      */
     public function getErrorMessage()
     {
-        return $this->getMessage();
+        return "Payment Gateway Error: {$this->message}";
     }
 }

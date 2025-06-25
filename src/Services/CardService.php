@@ -196,6 +196,7 @@ class CardService implements PaymentMethodInterface
             'headers' => $headers,
             'body'    => json_encode($body),
         ]);
+
         Logger::log('capture response data: ' . json_encode($response)); // Log
 
         if (! isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
