@@ -120,6 +120,39 @@ class PaymentGateway
         // Chama o método refundPayment do serviço correspondente
         return $service->refundPayment($transactionId, $amountValue, $amountCurrency, $customerInfo);
     }
+    /**
+     * Solicita o cancelamento de um pagamento.
+     *
+     * @param string $method Método de pagamento.
+     * @param string $transactionId ID da transação original.
+     * @param float $amountValue Valor a ser cancelado.
+     * @param string $amountCurrency Moeda do cancelamento.
+     * @param array $customerInfo Informações do cliente e parâmetros adicionais.
+     * @return array Resposta do serviço de pagamento.
+     * @throws PaymentException Em caso de método não suportado ou erro no serviço.
+     */
+    public function cancellationPayment($method, $transactionId, $amountValue, $amountCurrency, $customerInfo = [])
+    {
+        Logger::log("Cancellation payment with method: {$method}"); // Log
+
+        if (! isset($this->services[$method])) {
+            Logger::log("Cancellation method not supported: {$method}"); // Log
+
+            throw new PaymentException('Cancellation method not supported.');
+        }
+
+        $service = $this->services[$method];
+
+        // Adiciona os parâmetros necessários ao array de informações do cliente
+        $customerInfo['bearerToken'] = $this->bearerToken;
+        $customerInfo['clientId']    = $this->clientId;
+        $customerInfo['terminalId']  = $this->terminalId;
+        $customerInfo['paymentType'] = $this->paymentType;
+        $customerInfo['url']         = $this->url;
+
+        // Chama o método cancellationPayment do serviço correspondente
+        return $service->cancellationPayment($transactionId, $amountValue, $amountCurrency, $customerInfo);
+    }
 
     /**
      * Gera a configuração para o checkout.

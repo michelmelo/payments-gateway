@@ -207,6 +207,61 @@ class CardService implements PaymentMethodInterface
     }
 
     /**
+     * Solicita o cancelamento de um pagamento via cartão.
+     *
+     * @param string $transactionId ID da transação original.
+     * @param float $amountValue Valor a ser cancelado.
+     * @param string $amountCurrency Moeda do cancelamento.
+     * @param array $data Informações do cliente e parâmetros adicionais.
+     * @return array Resposta da API.
+     * @throws PaymentException Em caso de erro no cancelamento.
+     */
+    public function cancellationPayment(string $transactionId, float $amountValue, string $amountCurrency, array $data = []): array
+    {
+        $endpoint = $this->apiEndpoint . '/' . $transactionId . '/cancellation';
+
+        // Monta os cabeçalhos da requisição
+        $headers = [
+            'Authorization'   => 'Bearer ' . $data['bearerToken'],
+            'X-IBM-Client-Id' => $data['clientId'],
+            'Content-Type'    => 'application/json',
+        ];
+
+        // Monta o corpo da requisição conforme o exemplo do curl
+        $body = [
+            'merchant' => [
+                'terminalId'            => $data['terminalId'],
+                'channel'               => 'web',
+                'merchantTransactionId' => $data['merchantTransactionId'] ?? '',
+            ],
+            'transaction' => [
+                'transactionTimestamp' => $data['transactionTimestamp'] ?? date("Y-m-d\TH:i:s.v\Z"),
+                'description'          => $data['description'] ?? $this->generateTransactionDescription('Cancellation', $data['merchantTransactionId'] ?? null, $data['terminalId']),
+                'amount'               => [
+                    'value'    => $amountValue,
+                    'currency' => $amountCurrency,
+                ],
+                'originalTransaction' => [
+                    'id' => $data['originalTransactionId'] ?? '',
+                ],
+            ],
+        ];
+
+        $response = $this->sendRequest('POST', $endpoint, [
+            'headers' => $headers,
+            'body'    => json_encode($body),
+        ]);
+
+        Logger::log('cancellation response data: ' . json_encode($response)); // Log
+
+        if (! isset($response['returnStatus']) || $response['returnStatus']['statusMsg'] !== 'Success') {
+            throw new PaymentException('Failed to cancel CARD payment: ' . ($response['message'] ?? 'Unknown error'));
+        }
+
+        return $response;
+    }
+
+    /**
      * Consulta o status de um pagamento via cartão.
      *
      * @param string $transactionId ID da transação.
