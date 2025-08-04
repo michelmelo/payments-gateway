@@ -2,7 +2,26 @@
 
 Todos os principais eventos e alterações neste projeto.
 
-- 9ad420c 2025-06-05 fix: Refactor Logger class to improve log file path handling and formatting  (HEAD -> main, origin/main)
+- 2f941ef 2025-08-04 feat: Add cancellationPayment method to handle payment cancellations in PaymentGateway and CardService  (HEAD -> main, tag: v0.1.20, origin/main)
+- 8a7ccaa 2025-06-25 refactor: Update PaymentException to extend Exception and improve error handling; enhance logging in CardService  (tag: v0.1.19)
+- f863f5f 2025-06-24 feat: Add capturePayment method and enhance transaction description generation in CardService  (tag: v0.1.18)
+- 644b3f6 2025-06-20 feat: Update Logger class to use a log file pattern with date formatting for improved log management  (tag: v0.1.17)
+- 2d6a8b0 2025-06-20 style: Improve code formatting and add missing newlines in PaymentException and BlikService  (tag: v0.1.16)
+- 3a37802 2025-06-20 feat: Update payment methods to include customer parameter for improved processing  (tag: v0.1.15)
+- b1c1dee 2025-06-20 feat: Enhance PaymentGateway with detailed method documentation and improve logging  (tag: v0.1.14)
+- c3495ce 2025-06-20 feat: Refactor PaymentException to extend PrestaShopException and improve error handling
+- 29b3350 2025-06-20 feat: Add refundPayment method to PaymentMethodInterface with detailed documentation
+- c940732 2025-06-20 feat: Add detailed method documentation and improve code structure in BlikService
+- 8c0984d 2025-06-20 feat: Add detailed method documentation and improve code structure in CardService
+- 8ab463e 2025-06-20 feat: Enhance MbWayService with detailed method documentation and improve code structure
+- 284d663 2025-06-20 feat: Enhance MultibancoService with detailed method documentation and improve code structure
+- 1205df8 2025-06-20 feat: Add detailed method documentation and improve structure in PayByLinkService
+- 3f99e02 2025-06-20 feat: Enhance XPayService with detailed method documentation and improve API endpoint handling
+- 4ff83cc 2025-06-17 feat: Add logging and improve refundPayment and getPaymentStatus methods in PaymentGateway and CardService  (tag: v0.1.13)
+- 82bc6f5 2025-06-17 feat: Enhance refundPayment method to include additional customer information and improve request handling
+- 7bcd0fc 2025-06-16 feat: Add refundPayment method to PaymentGateway with logging and validation  (tag: v0.1.12)
+- 2acf2f0 2025-06-05 fix: Update CHANGELOG to reflect recent Logger class improvements  (tag: v0.1.11)
+- 9ad420c 2025-06-05 fix: Refactor Logger class to improve log file path handling and formatting  (tag: v0.1.10)
 - 6af615b 2025-06-05 fix: Update Logger class to allow optional log file path and use ISO 8601 timestamp format  (tag: v0.1.9)
 - 5087b08 2025-05-28 clean  (tag: v0.1.8)
 - 780e5de 2025-05-28 fixed code
